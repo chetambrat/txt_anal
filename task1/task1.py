@@ -1,11 +1,7 @@
-import gensim
-import PyPDF2
-import html
 import pdfplumber
 import xml.etree.cElementTree as ET
 from docx import Document
 from bs4 import BeautifulSoup as BS
-from tika import parser
 
 
 class Data(object):
@@ -38,16 +34,16 @@ class Data(object):
             return getText(self.raw_text)
 
 
-docx = Data("ugolovnie dela sorm rossiushka.docx")
+docx = Data("./ugolovnie dela sorm rossiushka.docx")
 docx_out = docx.process("docx")
 
-pdf = Data("ugolovnie dela sorm rossiushka.pdf")
+pdf = Data("./ugolovnie dela sorm rossiushka.pdf")
 pdf_out = pdf.process("pdf")
 
-txt = Data("ugolovnie dela sorm rossiushka.txt")
+txt = Data("./ugolovnie dela sorm rossiushka.txt")
 txt_out = txt.process("txt")
 
-html = Data("ugolovnie dela sorm rossiushka.html")
+html = Data("./ugolovnie dela sorm rossiushka.html")
 html_out = html.process("html")
 
 
@@ -69,7 +65,8 @@ def write_xml(input_data, xml_file):
     tree = ET.ElementTree(article)
     tree.write(xml_file)
 
-write_xml(html_out, "result.xml")
+
+write_xml(html_out, "result1.xml")
 write_xml(pdf_out, "result2.xml")
 write_xml(txt_out, "result3.xml")
-write_xml(docx_out, "resulr4.xml")
+write_xml(docx_out, "result4.xml")
