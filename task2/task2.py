@@ -109,6 +109,7 @@ def process_file(path, method):
     with open(path, 'r', encoding="utf8") as f:
         input_file = f.read()
         splitted = re.split("[.? ,()\"—“”…]", input_file)
+        # no usage of normal tokenizing tbd in task 3
         output = [elt for elt in splitted if elt != ""]
         external_array = []
         for elt1 in output:
