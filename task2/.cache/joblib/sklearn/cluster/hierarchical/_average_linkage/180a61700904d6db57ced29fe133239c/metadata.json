@@ -1,0 +1,1 @@
+{"duration": 0.007978677749633789, "input_args": {"**": "{'affinity': 'precomputed', 'linkage': 'average', 'n_clusters': None, 'return_distance': False}", "*": "[array([[0, 1, 1, ..., 1, 1, 1],\n       [1, 0, 0, ..., 0, 0, 0],\n       [1, 0, 0, ..., 0, 1, 0],\n       ...,\n       [1, 0, 0, ..., 0, 0, 0],\n       [1, 0, 1, ..., 0, 0, 1],\n       [1, 0, 0, ..., 0, 1, 0]]), None]"}}
