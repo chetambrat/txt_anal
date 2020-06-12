@@ -141,10 +141,8 @@ def calculate_metrics(labels, predicts):
     fsc = 2 * pr * rc / (pr + rc)
     acc = (tp + tn) / (tp + tn + fp + fn)
 
-    print("Precision: ", pr)
-    print("Recall: ", rc)
-    print("Fscore: ", fsc)
-    print("Accuracy: ", acc)
+    with open("metrics.txt", "w") as metrics_file:
+        metrics_file.write(f"Precision: {pr}\nRecall: {rc}\nFscore: {fsc}\nAccuracy: {acc}")
 
 
 classifier = NaiveBayesClassifier(train_data)
