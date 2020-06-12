@@ -11,21 +11,19 @@ Alexey Platonov, [15.04.20 18:51]
 Поправка не один, а два алгоритма - и сравнить их между собой после тюнинга на wordsim
 """
 
-import math
 import os
 import re
-from collections import Counter
+from collections import defaultdict
+
+import nltk
 import numpy as np
 import pandas as pd
-import nltk
-from scipy import linalg
-from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
-from sklearn.metrics.pairwise import cosine_similarity
-from collections import defaultdict
+from scipy import linalg
 from scipy.spatial.distance import dice
-import itertools
+from sklearn.metrics.pairwise import cosine_similarity
 
 lemmatizer = WordNetLemmatizer()
 stemming = PorterStemmer()
