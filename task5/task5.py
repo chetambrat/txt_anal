@@ -9,6 +9,7 @@ from nltk.tokenize import word_tokenize
 path = "spam.csv"
 stemming = PorterStemmer()
 
+
 def process_data(location):
     mails = pd.read_csv(location, encoding='latin-1')
     mails.drop(['Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4'], axis=1, inplace=True)
@@ -142,7 +143,8 @@ def calculate_metrics(labels, predicts):
     acc = (tp + tn) / (tp + tn + fp + fn)
 
     with open("metrics.txt", "w") as metrics_file:
-        metrics_file.write(f"Precision: {pr}\nRecall: {rc}\nFscore: {fsc}\nAccuracy: {acc}")
+        metrics_file.write(f"F1: {fsc}\nAccuracy: {acc}")
+    return
 
 
 classifier = NaiveBayesClassifier(train_data)

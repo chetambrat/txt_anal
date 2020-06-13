@@ -1,0 +1,7 @@
+for cosine similarity the correlations are: 
+pmi: 0.231 at 0.071 significance level
+lsa: 0.167 at 0.193 significance level
+for dice similarity the correlations are: 
+pmi: -0.236 at 0.065 significance level
+lsa: -0.097 at 0.454 significance level
+можно заметить, что корелляция слабая между вордсим и ручным подсчетом по корпусу
