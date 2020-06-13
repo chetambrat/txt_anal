@@ -24,7 +24,7 @@ from nltk.stem import WordNetLemmatizer
 from scipy import linalg
 from scipy.spatial.distance import dice
 from sklearn.metrics.pairwise import cosine_similarity
-
+from scipy.stats import pearsonr
 lemmatizer = WordNetLemmatizer()
 stemming = PorterStemmer()
 
@@ -114,19 +114,22 @@ def import_wordsim_words(path):
             if words_processed[0] in keys_pmi and words_processed[1] in keys_pmi:
                 print(words_processed)
                 output_list_1.append(words_processed[:2])
-                golden_witch.append(words_processed[2])
+                beatrice = words_processed[2].split("\n")
+                golden_witch.append(float(beatrice[0]))
+                print(beatrice[0])
         return output_list_1, golden_witch
 
 
 wordlist, beato = import_wordsim_words("./wordsim353_sim_rel/wordsim_similarity_goldstandard.txt")
-print(wordlist)
+print(type(beato[0]))
 
 
 def process_ws(wlist):
+    pmi_cosine_list, lsa_cosine_list, pmi_dice_list, lsa_dice_list = [], [], [], []
     """ will take a decade to compute """
     with open("cosine.txt", "w+") as cosine_file, open("dice.txt", "w+") as dice_file:
-        cosine_file.write("pair\t\t\t\t\tppmi lsa golden\n")
-        dice_file.write("pair\t\t\t\t\tppmi lsa golden\n")
+        cosine_file.write("pair\t\t\tppmi lsa golden\n")
+        dice_file.write("pair\t\t\tppmi lsa golden\n")
         for i, pair in enumerate(wlist):
             pmi_vector_1 = np.array([ppmi.get(pair[0]).values])
             pmi_vector_2 = np.array([ppmi.get(pair[1]).values])
@@ -142,8 +145,29 @@ def process_ws(wlist):
             lsa_number_cos = cosine_similarity(lsa_vector_1.reshape(1, -1), lsa_vector_2.reshape(1, -1))[0][0]
             lsa_number_dice = dice(lsa_vector_1, lsa_vector_2)
 
-            cosine_file.write(f"{pair}\t{round(ppmi_number_cos, 3)}\t{round(lsa_number_cos, 3)}\t{beato[i]}")
-            dice_file.write(f"{pair}\t{round(ppmi_number_dice, 3)}\t{round(lsa_number_dice, 3)}\t{beato[i]}")
+            cosine_file.write(f"{pair}\t{round(ppmi_number_cos, 3)}\t{round(lsa_number_cos, 3)}\t{beato[i]}\n")
+            dice_file.write(f"{pair}\t{round(ppmi_number_dice, 3)}\t{round(lsa_number_dice, 3)}\t{beato[i]}\n")
+            pmi_cosine_list.append(ppmi_number_cos)
+            pmi_dice_list.append(ppmi_number_dice)
+            lsa_cosine_list.append(lsa_number_cos)
+            lsa_dice_list.append(lsa_number_dice)
+        corr_pmi_cos = pearsonr(pmi_cosine_list, beato)
+        corr_lsa_cos = pearsonr(lsa_cosine_list, beato)
+        corr_pmi_dice = pearsonr(pmi_dice_list, beato)
+        corr_lsa_dice = pearsonr(lsa_dice_list, beato)
+        with open("correlations.txt", "w+") as corr_file:
+            corr_file.write(f"for cosine similarity the correlations are: \npmi: {round(corr_pmi_cos[0], 3)} at"
+                            f" {round(corr_pmi_cos[1], 3)} significance level\n")
+            corr_file.write(f"lsa: {round(corr_lsa_cos[0], 3)} at"
+                            f" {round(corr_lsa_cos[1], 3)} significance level\n")
+            corr_file.write(f"for dice similarity the correlations are: \npmi: {round(corr_pmi_dice[0], 3)} at"
+                            f" {round(corr_pmi_dice[1], 3)} significance level\n")
+            corr_file.write(f"lsa: {round(corr_lsa_dice[0], 3)} at"
+                            f" {round(corr_lsa_dice[1], 3)} significance level\n")
+            corr_file.write(f"можно заметить, что корелляция слабая между вордсим и ручным подсчетом по корпусу")
+        print("for corr:", corr_pmi_cos, corr_lsa_cos)
+        print("for dice:", corr_lsa_dice, corr_pmi_dice)
+
 
 
 process_ws(wordlist)
